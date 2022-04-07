@@ -1,124 +1,126 @@
-body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1;
-  }
-  
-  textarea{
-    background: transparent;
-    border: none;
-    resize: none;
-    color: #000000;
-    border-left: 1px solid black;
-    padding: 10px;
-    height: 100%;
-    width: 100%;
-  }
-  
-  .jumbotron {
+#plannerBody {
+    padding-bottom: 30px;
+}
+
+
+textarea {
+  background: transparent;
+  border: none;
+  resize: none;
+  color: #000000;
+  border-left: 1px solid #88898C;
+  padding: 10px;
+}
+
+.hour-row {
+    /* position:relative; */
+}
+
+.hour-label {
+    margin-top: 15px;
+    font-weight: 700;
+    color: #495057;
+}
+
+.hour-row:after {
+    content: '';
+    display:block;
+    clear:both;
+}
+
+.save {
+    width: 18%;
+    border: 1px solid #fff;
+    border-radius: 0 0.5rem 0.5rem 0;
+    float:left;
+    height: 75px;
+}
+
+.save > img {
+    height: 25px;
+    width: auto;
+}
+
+.save:hover {
+    border: 1px solid #fff;
+
+}
+.event {
+    width: 82%;
+    background-color: #f1f3f5;
+    color: #343a40;
+    border: 1px solid #fff;
+    padding: 0.5em;
+    height: 75px;
+    float:left;
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.past > .event {
+    opacity: 0.35;
+    border-left: 5px solid #495057;
+}
+
+.past > .save {
+    opacity: 0.35;
+}
+
+.current > .event {
+    border-left: 5px solid #40c057;
+    font-weight: 700;
+    background-color: #d3f9d8;
+    font-size: 1.25em
+}
+
+.future > .event {
+    /* background-color: #b2f2bb; */
+    border-left: 5px solid #495057;
+}
+
+.event:focus {
+    outline:none;
+    border-left: 5px solid #007bff !important;
+    opacity: 1 !important;
+}
+
+.event:focus + .save {
+    opacity: 1 !important;
+}
+
+.current > .hour-label {
+    font-weight: 700;
+    font-size: 1.25em;
+}
+
+.save:focus {
+    box-shadow: none;
+}
+
+.jumbotron {
     text-align: center;
-    background-color: transparent;
-    color: black;
-    border-radius: 0;
-    border-bottom: 10px solid black;
-  }
-  
-  .alert-success {
-    position: fixed;
-    text-align: center;
-    left: 50%;
-    width: 50%;
-    margin-left: -25%;
-    bottom: -80px;
-  }
-  
-  .container {
-    margin-bottom: 30px;
-    background-color: grey;
-  }
-  
-  .description{
-    white-space: pre-wrap;
-  }
-  
-  .col-2, .col-8, .col-sm-1, .col-sm-10 {
-    padding: 0;
-  }
-  
-  .time-block{
-    text-align: center;
-    border-radius: 15px;
-  }
-  
-  .row {
-  
-    height: 80px;
-    border-top: 1px solid white;;
-  }
-  
-  .hour {
-    background-color: #ffffff;
-    color: #000000;
-    border-top: 1px dashed #000000;
-    white-space: pre-wrap;
-  }
-  
-  .past {
-    background-color: #d3d3d3;
-    color: white;
-  }
-  
-  .present {
-    background-color: #ff6961;
-    color: white;
-  }
-  
-  .future {
-    background-color: #77dd77;
-    color: white;
-  }
-  
-  .saveBtn {
-    border-left: 1px solid black;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    background-color: #06AED5;
-    height: 100%;
-    width: 100%;
-    color: white;
-    
-  }
-  
-  .saveBtn i:hover {
-    font-size: 20px;
-    transition: all .3s ease-in-out;
-  }
-  
-  .alert-animation {
-    animation-name: show-and-hide;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
-    animation-duration: 4.00s;
-  }
-  
-  @media (max-width: 600px) {
-    .row {
-      margin-left: 2%;
-      margin-right: 2%;
+}
+
+@media screen and (min-width: 768px) {
+    .hour-row {
+        height: 100px;
     }
-  }
-  
-  @keyframes show-and-hide {
-    0% {
-      bottom: -80px;
+
+    .planner-container {
+        height: 100%;
+        float:left;
     }
-    15% {
-      bottom: 0;
+
+    .hour-label {
+        width: 8%;
+        margin-top:0;
+        font-weight: 400;
+        border-top: 2px solid #f1f3f5;
+        padding-top:5px;
     }
-    85% {
-      bottom: 0;
+
+    .save {
+        width: 10%;
     }
-    100% {
-      bottom: -80px;
-    }
-  }
+
+
+}

@@ -1,7 +1,7 @@
-$(document).trigger(function(){
+$(document).trigger(function() {
 
     const firstHour =9;
-    const lasHour = 17;
+    const lastHour = 17;
 
     const plannerObject = {};
     const today = getDate();
@@ -30,7 +30,7 @@ $(document).trigger(function(){
         const hoursObject = {};
         for (const i = firstHour; i <= lastHour; i++) {
             hoursObject[i] ="";
-    }
+        }
     return hoursObject;
     }   
 
@@ -47,44 +47,44 @@ $(document).trigger(function(){
     }
 
         function renderCurrentDay() {
-            $("#currentDay').text(moment(). format('ddd, MMMM Do YYYY));
+            $('#currentDay').text(moment().format('dddd, MMMM D, YYYY'));
         }
 
-        $('save').on('click', saveEvent);
+        $('.save').on('click', saveEvent);
 
         function saveEvent(e) {
-            const hour = $(this).val();.hour;
-            plannerObject[today][hour] = $)'textarea[data-hour="' + hour + '"]').val().trim();
+            const hour = $(this).data().hour;
+            plannerObject[today][hour] = $('textarea[data-hour=' + hour + ']').val().trim();
             storeObject();
-        }
+    }
         
 
         function storeObject(){
             localStorage.setItem('planner', JSON.stringify(plannerObject));
-        }
+    }
 
         function retrieveObject(){
-            return JSON.parse(localStorage.getItem('planner));
-        }
+            return JSON.parse(localStorage.getItem('planner'));
+    }
 
         function getDate() {
-            return moment().format('YYYY-MM-DD'));
-        }
+            return moment().format('YYYY-MM-DD');
+    }
 
         function getHour() {
-            return moment().format('k')
-        }
+            return moment().format('k');
+    }
 
         function isPastPresFut(i) {
-            if (i < hour) return "past";
+            if (i < hour) {
+                return "past";
         }else if (i == hour) {
             return "current";
         }else if(i > hour) {
             return "future";
         }
-}
+     function getHourFormatted(hr) {
+       return moment(hr,'H').format('ha');
+    }
 
-  
-
-
-
+    });
