@@ -1,90 +1,81 @@
-$(document).trigger(function() {
+// Counter Script: Global Operators
 
-    const firstHour =9;
-    const lastHour = 17;
+var hourlyArray;
+var currentTime = moment();
+var currentHour;
+var eventItem = $(".col-8");
+var plannerText = $("textarea");
+$.each(plannerText, function() {
+    this.value = "";
+});
 
-    const plannerObject = {};
-    const today = getDate();
-    const hours = getHour();
+// If a local hourly tasks exist, import them, otherwise initialize the array
+if (localStorage.getItem("localHourlyTasks")) {
+    hourlyArray = JSON.parse(localStorage.getItem("localHourlyTasks"));
+} else {
+    hourlyArray = [];
+};
 
-    init();
+// Write the current date by "DayofWeek, Month DayofMonth"
+$("#currentDay").text(`${currentTime.format('dddd, MMMM Do')}`);
 
-    function init() {
-        renderObject();
-        renderPlanner();
-        renderCurrentDay();
-    }
-    function renderObject() {
-        if (retrieveObject()) {
-            plannerObject = retrieveObject();
-        } 
-
-        if(!plannerObject [today]) {
-            plannerObject[today] = renderObjectHours();
-
-            storeObject();
+// The current hour is offset by 9 to match the array indicies, since 9AM is the first slot
+function updateCurrentScheduleTime() {
+    eventItem.removeClass('past present future');
+    $.each(eventItem, function(scheduleBlockHour) {
+        if (scheduleBlockHour < (currentTime.hour() - 9)) {
+            $(this).addClass('past');
+        } else if (scheduleBlockHour == (currentTime.hour() - 9)) {
+            $(this).addClass('present');
+        } else {
+            $(this).addClass('future');
         }
-    }
-
-    function renderObjectHours() {
-        const hoursObject = {};
-        for (const i = firstHour; i <= lastHour; i++) {
-            hoursObject[i] ="";
-        }
-    return hoursObject;
-    }   
-
-    function renderPlanner() {
-        $('#plannerBody').empty();
-        for (const i =firstHour; i <= lastHour; i++) {
-            const html = '<div class="hour-row '+isPastPresFut(i)+'" id="'+i+'">';
-            html += '<div class="planner-container hour-label"><span>'+getHourFormatted(i)+'</span></div>';
-            html += '<textarea class="planner-container event" data-hour="'+i+'">'+plannerObject[today][i]+'</textarea>';
-            html += '<button class="planner-container save btn btn-primary" data-hour="'+i+'"><img src="assets/images/save-solid.svg"/></button>';
-            html += '</div>';
-            $('#plannerBody').append(html);
-        }
-    }
-
-        function renderCurrentDay() {
-            $('#currentDay').text(moment().format('dddd, MMMM D, YYYY'));
-        }
-
-        $('.save').on('click', saveEvent);
-
-        function saveEvent(e) {
-            const hour = $(this).data().hour;
-            plannerObject[today][hour] = $('textarea[data-hour=' + hour + ']').val().trim();
-            storeObject();
-    }
-        
-
-        function storeObject(){
-            localStorage.setItem('planner', JSON.stringify(plannerObject));
-    }
-
-        function retrieveObject(){
-            return JSON.parse(localStorage.getItem('planner'));
-    }
-
-        function getDate() {
-            return moment().format('YYYY-MM-DD');
-    }
-
-        function getHour() {
-            return moment().format('k');
-    }
-
-        function isPastPresFut(i) {
-            if (i < hour) {
-                return "past";
-        }else if (i == hour) {
-            return "current";
-        }else if(i > hour) {
-            return "future";
-        }
-     function getHourFormatted(hr) {
-       return moment(hr,'H').format('ha');
-    }
-
     });
+    currentHour = currentTime.hour();
+};
+
+// The delay to adding the animation class allows enough time to fully remove the class,
+// allowing the animation to play again.
+function updateLocalStorage() {
+    event.preventDefault();
+    let btnIndex = Number($(this).attr('id'));
+    $('.alert-success').removeClass('alert-animation');
+
+    if (plannerText[btnIndex].value.trim() != "") {
+        hourlyArray[btnIndex] = {
+            time: $(".hour")[btnIndex].textContent.trim(),
+            task: plannerText[btnIndex].value
+        };
+
+        localStorage.setItem("localHourlyTasks", JSON.stringify(hourlyArray));
+        setTimeout(function() {
+            $('.alert-success').addClass('alert-animation');
+            $('.alert-success').text(`Successfully saved task at ${$(".hour")[btnIndex].textContent.trim()}!`);
+        }, 100);
+    };
+};
+
+// Write saved tasks to the planner on page load
+function writeCurrentTasks() {
+    $.each(hourlyArray, function(i) {
+        if (hourlyArray[i]) {
+            plannerText[i].value = hourlyArray[i].task;
+        };
+    });
+};
+
+// Updates the current time every minute and updates the planner style every hour
+setInterval(function() {
+    currentTime = moment();
+    if (currentHour < currentTime.hour()) {
+        updateCurrentScheduleTime();
+    } else if (currentHour > currentTime.hour()) {
+        updateCurrentScheduleTime();
+        $("#currentDay").text(`${currentTime.format('dddd, MMMM Do')}`);
+    }
+}, 1000);
+
+// Initial function calls and event listener
+updateCurrentScheduleTime();
+writeCurrentTasks();
+$("button").click(updateLocalStorage);

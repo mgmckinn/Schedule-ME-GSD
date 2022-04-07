@@ -1,5 +1,5 @@
 
-<h1 align=center font-size=20px font-weight=bold>Schedule Me GSD</h1>
+<h1 text-align=center font-size=20px font-weight=bold>Schedule Me GSD</h1>
 
 ## Description
 This is a weekly work schedule. Users can keep track of their work week on the hour. 
